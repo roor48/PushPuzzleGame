@@ -24,9 +24,4 @@ public class GameManager : Singleton<GameManager>
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
     }
-
-    public void Btn_Exit()
-    {
-        Application.Quit();
-    }
 }
