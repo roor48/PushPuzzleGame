@@ -12,6 +12,9 @@ public class UIManager : MonoBehaviour
     private void Start()
     {
         _gameManager = GameManager.Instance;
+
+        if (_gameManager.speed > 0)
+            speedSlider.value = _gameManager.speed / 10f;
         SetPlayerSpeed();
     }
 
@@ -42,5 +45,10 @@ public class UIManager : MonoBehaviour
     public void Btn_Restart()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+    public void Btn_Exit()
+    {
+        Application.Quit();
     }
 }
