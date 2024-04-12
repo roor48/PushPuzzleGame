@@ -11,8 +11,6 @@ public class PlayerMovements : MonoBehaviour
     
     private MapGen mapGen;
     
-    private PlayerInput input;
-
     public MoveObject[] moveObjects;
 
     public float Speed => _gameManager.speed;
@@ -36,15 +34,9 @@ public class PlayerMovements : MonoBehaviour
         clearText = GameObject.Find("ClearText").GetComponent<Text>();
         clearText.text = "";
         
-        input = GetComponent<PlayerInput>();
         moveObjects = FindObjectsOfType<MoveObject>();
 
         transform.position = new Vector3(curX, curY, 0);
-    }
-
-    private void Update()
-    {
-        Move();
     }
 
     public void Init(int yPos, int xPos, _2DArray[] map)
@@ -60,21 +52,29 @@ public class PlayerMovements : MonoBehaviour
 
         transform.position = new Vector3(curX, curY, 0);
     }
-    
-    private void Move()
+
+    public void VerticalMove(int val)
     {
-        if (input.Vertical == 0 && input.Horizontal == 0) return;
-        
-        if (!CanMove())
+        Move(val, 0);
+    }
+
+    public void HorizontalMove(int val)
+    {
+        Move(0, val);
+    }
+    
+    private void Move(int Vertical, int Horizontal)
+    {
+        if (!CanMove(Vertical, Horizontal))
             return;
             
-        int nextY = curY + input.Vertical;
-        int nextX = curX + input.Horizontal;
+        int nextY = curY + Vertical;
+        int nextX = curX + Horizontal;
 
         if (mapInfo[nextY].arr[nextX] is 2 or 4)
         {
-            int nextObjectPosY = nextY + input.Vertical;
-            int nextObjectPosX = nextX + input.Horizontal;
+            int nextObjectPosY = nextY + Vertical;
+            int nextObjectPosX = nextX + Horizontal;
 
             if (mapInfo[nextObjectPosY].arr[nextObjectPosX] == 3)
             {
@@ -94,19 +94,19 @@ public class PlayerMovements : MonoBehaviour
                 mapInfo[nextY].arr[nextX] = 3;
             }
                 
-            StartCoroutine(FindPositionMoveObject(nextY, nextX).Move(input.Vertical, input.Horizontal, Speed));
+            StartCoroutine(FindPositionMoveObject(nextY, nextX).Move(Vertical, Horizontal, Speed));
         }
 
         StartCoroutine(MoveAnim(nextY, nextX));
     }
 
-    private bool CanMove()
+    private bool CanMove(int Vertical, int Horizontal)
     {
         if (isMoving)
             return false;
         
-        int nextY = curY + input.Vertical;
-        int nextX = curX + input.Horizontal;
+        int nextY = curY + Vertical;
+        int nextX = curX + Horizontal;
         
         if (nextX >= mapWidth || nextX < 0 ||
             nextY >= mapHeight || nextY < 0)
@@ -120,8 +120,8 @@ public class PlayerMovements : MonoBehaviour
 
         if (mapInfo[nextY].arr[nextX] == 2 || mapInfo[nextY].arr[nextX] == 4)
         {
-            int nextObjectPosY = nextY + input.Vertical;
-            int nextObjectPosX = nextX + input.Horizontal;
+            int nextObjectPosY = nextY + Vertical;
+            int nextObjectPosX = nextX + Horizontal;
             if (nextObjectPosX >= mapWidth || nextObjectPosX < 0 ||
                 nextObjectPosY >= mapHeight || nextObjectPosY < 0)
             {

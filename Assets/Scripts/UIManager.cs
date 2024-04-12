@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
@@ -36,5 +37,10 @@ public class UIManager : MonoBehaviour
         speedSlider.value = _gameManager.speed / 10f;
 
         speedText.text = $"{_gameManager.speed:F2}";
+    }
+    
+    public void Btn_Restart()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 }

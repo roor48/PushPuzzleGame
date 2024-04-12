@@ -25,6 +25,7 @@ public class GameManager : Singleton<GameManager>
         }
     }
 
+
     public void Btn_Exit()
     {
         Application.Quit();
