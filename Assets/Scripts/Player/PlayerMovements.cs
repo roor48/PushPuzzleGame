@@ -7,7 +7,11 @@ using UnityEngine.UI;
 
 public class PlayerMovements : MonoBehaviour
 {
+    private GameManager _gameManager;
+    private ReturnMove _returnMove;
+
     public Text clearText;
+    public Text moveCountText;
     
     private MapGen mapGen;
     
@@ -26,15 +30,18 @@ public class PlayerMovements : MonoBehaviour
     public int mapWidth;
     
     public bool isMoving;
-
-    private GameManager _gameManager;
+    
     private void Start()
     {
         _gameManager = GameManager.Instance;
+        _returnMove = GetComponent<ReturnMove>();
         
         mapGen = FindObjectOfType<MapGen>();
         clearText = GameObject.Find("ClearText").GetComponent<Text>();
         clearText.text = "";
+
+        moveCountText = GameObject.Find("MoveCount").GetComponent<Text>();
+        moveCountText.text = "이동횟수: 0";
         
         input = GetComponent<PlayerInput>();
         moveObjects = FindObjectsOfType<MoveObject>();
@@ -67,7 +74,7 @@ public class PlayerMovements : MonoBehaviour
         
         if (!CanMove())
             return;
-            
+        
         int nextY = curY + input.Vertical;
         int nextX = curX + input.Horizontal;
 
@@ -94,10 +101,15 @@ public class PlayerMovements : MonoBehaviour
                 mapInfo[nextY].arr[nextX] = 3;
             }
                 
-            StartCoroutine(FindPositionMoveObject(nextY, nextX).Move(input.Vertical, input.Horizontal, Speed));
+            StartCoroutine(moveObjects[FindPositionMoveObject(nextY, nextX)].Move(input.Vertical, input.Horizontal, Speed));
         }
 
         StartCoroutine(MoveAnim(nextY, nextX));
+        
+        ChangeMoveCount(1);
+        
+        ReturnStack temp = new ReturnStack(new Vector3(curX, curY, 0), new Vector3(nextX, nextY, 0), FindPositionMoveObject(nextY, nextX));
+        _returnMove.returnStack.Push(temp);
     }
 
     private bool CanMove()
@@ -159,15 +171,15 @@ public class PlayerMovements : MonoBehaviour
         CheckIsComplete();
     }
 
-    private MoveObject FindPositionMoveObject(int yPos, int xPos)
+    private int FindPositionMoveObject(int yPos, int xPos)
     {
-        foreach (var moveObject in moveObjects)
+        for (int i = 0; i < moveObjects.Length; i++)
         {
-            if (yPos == moveObject.curY && xPos == moveObject.curX)
-                return moveObject;
+            if (yPos == moveObjects[i].curY && xPos == moveObjects[i].curX)
+                return i;
         }
 
-        return null;
+        return -1;
     }
     private void CheckIsComplete()
     {
@@ -178,5 +190,11 @@ public class PlayerMovements : MonoBehaviour
         }
 
         clearText.text = "성공";
+    }
+
+    public void ChangeMoveCount(int val)
+    {
+        _gameManager.moveCount += val;
+        moveCountText.text = $"이동횟수: {_gameManager.moveCount:N0}";
     }
 }

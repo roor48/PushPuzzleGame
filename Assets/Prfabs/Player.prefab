@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 884023301182743120}
   - component: {fileID: 3688623787588687807}
   - component: {fileID: 62501375213164034}
+  - component: {fileID: 1976554459296393016}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -98,10 +99,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6557b1a596eb3314f93e49aa58899736, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  clearText: {fileID: 0}
+  moveCountText: {fileID: 0}
   moveObjects: []
-  speed: 2
+  mapInfo: []
   curY: 0
   curX: 0
+  mapHeight: 0
+  mapWidth: 0
   isMoving: 0
 --- !u!114 &62501375213164034
 MonoBehaviour:
@@ -117,3 +122,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Vertical: 0
   Horizontal: 0
+--- !u!114 &1976554459296393016
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9199525294814326621}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6822bdd14c6ee874680d679963661eef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

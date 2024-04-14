@@ -8,6 +8,7 @@ using UnityEngine.UI;
 public class GameManager : Singleton<GameManager>
 {
     public float speed;
+    public int moveCount;
 
     protected override void Awake()
     {
